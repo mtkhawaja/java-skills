@@ -1,0 +1,13 @@
+{
+  "config": {
+    // The repo wraps prose at ~100 and skill tables/code lines run long by design.
+    "line-length": false,
+    // Agent definitions (agents/*.md) are system prompts: frontmatter + prose, no H1.
+    "first-line-heading": false
+  },
+  "ignores": [
+    // Historical planning record, not shipped content.
+    "docs/superpowers/plans/**",
+    "node_modules/**"
+  ]
+}

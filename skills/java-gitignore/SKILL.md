@@ -30,10 +30,12 @@ Drop in `references/java.gitignore` as a starting point (Maven + Gradle + IDE + 
 - **Wrapper files** — keep `gradle/wrapper/gradle-wrapper.jar`, `gradle/wrapper/gradle-wrapper.properties`,
   and `.mvn/wrapper/maven-wrapper.properties` committed so `./gradlew` / `./mvnw` work for everyone.
   A broad `*.jar` or `build/` rule can swallow these — add negations:
+
   ```gitignore
   !gradle/wrapper/gradle-wrapper.jar
   !**/src/main/**/build/
   ```
+
 - Source, `pom.xml`/`build.gradle`, and `.mvn/` config (other than `timing.properties`).
 
 ## Initialize
@@ -41,6 +43,7 @@ Drop in `references/java.gitignore` as a starting point (Maven + Gradle + IDE + 
 1. One `.gitignore` at the repo root; module-specific files only if a module genuinely differs.
 2. Copy `references/java.gitignore`, then trim to the project's build tool (Maven vs Gradle).
 3. OS/IDE cruft is per-developer — a **global** excludes file keeps it out of every repo:
+
    ```bash
    git config --global core.excludesfile ~/.gitignore_global   # .DS_Store, .idea/, *.iml, etc.
    ```

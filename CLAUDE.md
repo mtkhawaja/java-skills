@@ -18,13 +18,25 @@ third-person "Use when…" descriptions (≤1024 chars), SKILL.md body well unde
 files linked one level deep from SKILL.md (with a `## Contents` section once they pass 100 lines),
 no time-sensitive phrasing, and three scenarios per skill in `evals/` (see `evals/README.md`).
 
+## Checks
+
+`./scripts/check.sh` runs every repo check (shellcheck, syntax, JSON/eval validation, version
+lockstep, hook behavioral tests). CI runs the same script — run it before claiming work done.
+
+## CI workflows
+
+**Never reference a GitHub Action version from memory — training data is always stale here.**
+Before writing or editing anything under `.github/workflows/`, look up the current major of every
+action used (e.g. `actions/checkout` releases page) and pin to that. The same applies to any other
+externally versioned tool referenced in CI.
+
 ## Versioning
 
 The version lives in two manifests and **must stay in sync**. Never hand-edit version fields.
 `scripts/bump-version.sh` is the single source of truth — it bumps every field declared in
 `.version-bump.json` in lockstep.
 
-```
+```bash
 ./scripts/bump-version.sh --check      # show versions, detect drift
 ./scripts/bump-version.sh --audit      # also scan repo for stray version strings
 ./scripts/bump-version.sh <X.Y.Z>      # bump all declared files

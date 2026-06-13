@@ -5,7 +5,7 @@ development. The repo doubles as its own plugin marketplace.
 
 ## Install
 
-```
+```text
 /plugin marketplace add mtkhawaja/java-skills
 /plugin install java-skills@java-skills
 ```
@@ -25,14 +25,14 @@ A `SessionStart` hook detects Maven/Gradle projects and surfaces this skill list
 
 ## Agents
 
-| Agent                 | Use for                                                                                                  |
-|-----------------------|----------------------------------------------------------------------------------------------------------|
-| `java-reviewer`       | Read-only review of a diff, class, or package against every skill's conventions and red-flag lists      |
-| `java-upgrade-advisor`| Ordered migration plans — Java version / Spring Boot / JUnit 4 → 5 (OpenRewrite), Maven 3 → 4 (`mvnup`) |
+| Agent                  | Use for                                                                                                 |
+|------------------------|---------------------------------------------------------------------------------------------------------|
+| `java-reviewer`        | Read-only review of a diff, class, or package against every skill's conventions and red-flag lists      |
+| `java-upgrade-advisor` | Ordered migration plans — Java version / Spring Boot / JUnit 4 → 5 (OpenRewrite), Maven 3 → 4 (`mvnup`) |
 
 ## Layout
 
-```
+```text
 .claude-plugin/
   plugin.json        # plugin manifest
   marketplace.json   # marketplace listing (source: ./)

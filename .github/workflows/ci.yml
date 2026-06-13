@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: shellcheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          version: v0.11.0
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v23.2.0
+        with:
+          globs: '**/*.md'
+      - run: ./scripts/check.sh static
+
+  hook-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+      - run: ./scripts/check.sh hooks
