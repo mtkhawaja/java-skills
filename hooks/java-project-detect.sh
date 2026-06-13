@@ -57,6 +57,7 @@ is_java_project() {
 frontmatter_field() {
   local file="$1" key="$2" line
   while IFS= read -r line; do
+    line="${line%$'\r'}"  # tolerate CRLF checkouts (Windows autocrlf)
     case "${line}" in
       "${key}: "*)
         printf '%s' "${line#"${key}": }"

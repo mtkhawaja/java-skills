@@ -130,6 +130,26 @@ test_hook_silent_for_non_java() {
   rm -rf "${tmp}"
 }
 
+test_hook_tolerates_crlf() {
+  say "session hook: tolerates CRLF line endings (Windows checkout)"
+  local root tmp ctx
+  root="$(mktemp -d)"
+  mkdir -p "${root}/skills/demo-skill"
+  printf -- '---\r\nname: demo-skill\r\ndescription: Use when demoing — detail.\r\n---\r\n' \
+    >"${root}/skills/demo-skill/SKILL.md"
+  tmp="$(mktemp -d)"
+  touch "${tmp}/pom.xml"
+  ctx="$(CLAUDE_PROJECT_DIR="${tmp}" CLAUDE_PLUGIN_ROOT="${root}" \
+    bash hooks/java-project-detect.sh \
+    | jq -er '.hookSpecificOutput.additionalContext')" \
+    || { err "CRLF hook output is not the expected JSON"; exit 1; }
+  case "${ctx}" in
+    *"\`demo-skill\`"*) ;;
+    *) err "hook leaked carriage return into skill name on CRLF input"; exit 1 ;;
+  esac
+  rm -rf "${root}" "${tmp}"
+}
+
 test_shellcheck_hook() {
   if ! command -v shellcheck >/dev/null 2>&1; then
     say "shellcheck hook: SKIPPED (shellcheck not installed)"
@@ -174,6 +194,7 @@ run_hooks() {
   test_hook_lists_all_skills
   test_hook_detects_nested_build
   test_hook_silent_for_non_java
+  test_hook_tolerates_crlf
   test_shellcheck_hook
 }
 
