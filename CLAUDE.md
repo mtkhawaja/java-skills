@@ -7,6 +7,7 @@ A Claude Code plugin (and self-hosting marketplace) providing a skills library f
 - `.claude-plugin/plugin.json` — plugin manifest
 - `.claude-plugin/marketplace.json` — marketplace listing (`source: "./"`)
 - `skills/` — one subdirectory per skill, each with a `SKILL.md`
+- `agents/` — subagent definitions, one `.md` per agent
 
 ## Writing skills
 
