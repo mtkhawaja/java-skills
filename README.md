@@ -1,5 +1,8 @@
 # java-skills
 
+[![ci](https://github.com/mtkhawaja/java-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/mtkhawaja/java-skills/actions/workflows/ci.yml)
+[![Dependabot Updates](https://github.com/mtkhawaja/java-skills/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/mtkhawaja/java-skills/actions/workflows/dependabot/dependabot-updates)
+
 A [Claude Code](https://claude.com/claude-code) plugin providing a skills library for Java
 development. The repo doubles as its own plugin marketplace.
 
