@@ -1,0 +1,36 @@
+[
+  {
+    "skills": ["java-development"],
+    "query": "Review this class from a Maven project whose pom sets <release>21</release>. List every convention violation, then output the fixed version.\n\n```java\nimport java.util.ArrayList;\nimport java.util.Optional;\n\npublic class ShippingCalculator {\n    public static final int STANDARD = 0;\n    public static final int EXPRESS = 1;\n    public static final int OVERNIGHT = 2;\n\n    private Optional<String> promoCode = Optional.empty();\n    private ArrayList rates = new ArrayList();\n\n    public double cost(int method, double weight, String destination) {\n        double result = 0;\n        if (destination != null) {\n            if (!destination.isBlank()) {\n                if (weight > 0) {\n                    if (method == STANDARD) { result = 5.0 + weight * 0.5; }\n                    else if (method == EXPRESS) { result = 10.0 + weight * 0.75; }\n                    else if (method == OVERNIGHT) { result = 25.0 + weight * 1.5; }\n                } else {\n                    throw new RuntimeException(\"bad weight\");\n                }\n            }\n        }\n        return result;\n    }\n\n    public boolean equals(Object o) {\n        return o instanceof ShippingCalculator;\n    }\n}\n```",
+    "expected_behavior": [
+      "Flags the Optional field (Optional is a return type only)",
+      "Flags the raw ArrayList type and the implementation-typed variable (program to interfaces)",
+      "Replaces the int constants with an enum and the if-else chain with an exhaustive switch expression",
+      "Flattens the nested conditionals into guard clauses that fail fast with specific exceptions instead of silently returning 0",
+      "Flags equals without hashCode and the missing @Override; the fix removes or corrects the broken equals",
+      "Adds final to parameters/locals/class per the house standard"
+    ]
+  },
+  {
+    "skills": ["java-development"],
+    "query": "Add a small helper to this Maven project that parses a list of ISO-8601 timestamps from a file and returns the most recent one. The pom sets <maven.compiler.release>17</maven.compiler.release>.",
+    "expected_behavior": [
+      "Detects the configured Java version (17) and consults the matching version reference before writing code",
+      "Uses no language or library feature newer than Java 17 and no preview features (no virtual threads, no pattern-matching switch as default idiom)",
+      "Closes the file resource with try-with-resources (Files.lines or reader in try (...))",
+      "Works in UTC with java.time types and does not call Instant.now()/LocalDateTime.now() for any 'now' logic (injects Clock if needed)",
+      "Validates input at the boundary and throws specific exceptions rather than returning silently"
+    ]
+  },
+  {
+    "skills": ["java-development"],
+    "query": "Write a new InvoiceNotifier class for a plain Java 21 service. It depends on an InvoiceRepository and a MailGateway, looks up an invoice by id, and emails the customer a summary. Include the constructor.",
+    "expected_behavior": [
+      "Injects both mandatory dependencies through the constructor with Objects.requireNonNull checks (no field/setter injection)",
+      "Declares fields, parameters, and locals final; uses braces on every control statement",
+      "Validates the id at the boundary (null/blank) and fails fast with a specific exception",
+      "Catches only specific exception types if it catches at all, preserving the cause when wrapping",
+      "Uses interface types in declarations and formatted()/String.format rather than + concatenation for the summary"
+    ]
+  }
+]

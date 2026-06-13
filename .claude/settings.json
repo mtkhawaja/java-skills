@@ -1,5 +1,26 @@
 {
   "model": "opus",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Edit(**/*.sh)",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/shellcheck-edited-file.sh\"",
+            "statusMessage": "shellcheck"
+          },
+          {
+            "type": "command",
+            "if": "Write(**/*.sh)",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/shellcheck-edited-file.sh\"",
+            "statusMessage": "shellcheck"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "claude-md-management@claude-plugins-official": true,
     "jdtls-lsp@claude-plugins-official": true,

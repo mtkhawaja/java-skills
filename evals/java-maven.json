@@ -1,0 +1,33 @@
+[
+  {
+    "skills": ["java-maven"],
+    "query": "Review this child pom.xml from a Maven 3.9 multi-module build. The parent's <dependencyManagement> already manages commons-lang3 at 3.17.0 and the parent has a <pluginManagement> section. List every problem and show the corrected POM.\n\n```xml\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\">\n  <modelVersion>4.0.0</modelVersion>\n  <parent>\n    <groupId>com.acme</groupId><artifactId>acme-parent</artifactId><version>2.0.0</version>\n  </parent>\n  <artifactId>acme-billing</artifactId>\n  <dependencies>\n    <dependency>\n      <groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId>\n      <version>3.14.0</version>\n    </dependency>\n    <dependency>\n      <groupId>com.oracle</groupId><artifactId>ojdbc8</artifactId><version>19.3</version>\n      <scope>system</scope>\n      <systemPath>${basedir}/lib/ojdbc8.jar</systemPath>\n    </dependency>\n    <dependency>\n      <groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId>\n    </dependency>\n  </dependencies>\n  <build>\n    <finalName>${artifactId}-${pom.version}</finalName>\n    <plugins>\n      <plugin>\n        <artifactId>maven-shade-plugin</artifactId>\n      </plugin>\n    </plugins>\n  </build>\n</project>\n```",
+    "expected_behavior": [
+      "Flags the child re-declaring (and silently downgrading) the managed commons-lang3 version",
+      "Flags the duplicate commons-lang3 declaration (Maven 4 fails on it)",
+      "Flags <scope>system</scope> and replaces it with a repository-managed artifact",
+      "Flags the prefixless ${artifactId} and ${pom.version} expressions (use ${project.*})",
+      "Adds the explicit plugin <groupId> and pins the plugin version in the parent's <pluginManagement>, not in the child"
+    ]
+  },
+  {
+    "skills": ["java-maven"],
+    "query": "Our 40-module Maven 3.9 project is on Java 17 and Spring Boot 3.2, with one legacy module on JUnit 4. Plan the path to Java 21, Spring Boot 3.5, JUnit 5, and eventually Maven 4 — concrete tools/commands, order, and safety steps.",
+    "expected_behavior": [
+      "Uses OpenRewrite recipes (UpgradeToJava21, UpgradeSpringBoot_3_5, JUnit4to5Migration) with correct artifact coordinates instead of hand-editing",
+      "Previews each migration with the dryRun goal / rewrite.patch before applying, and gates each step with ./mvnw verify",
+      "Keeps migrations in separate commits/PRs",
+      "Uses mvnup (not OpenRewrite) for the Maven 3 to 4 step, following the phased approach in the upgrade reference (3.9 baseline, -fos WARN cleanup, optional model 4.1.0)"
+    ]
+  },
+  {
+    "skills": ["java-maven"],
+    "query": "Set up the root pom.xml conventions for a new three-module Maven project (core, api, app) on Java 21. What goes in the parent, and what does each child declare?",
+    "expected_behavior": [
+      "Parent is pom-packaged aggregator with <modules>, <dependencyManagement> (or an imported BOM) and <pluginManagement> pinning every version; children declare dependencies without versions",
+      "Recommends the Maven Wrapper so builds don't depend on the machine's Maven",
+      "Inter-module dependencies use ${project.version} (or ${revision} CI-friendly versioning)",
+      "Recommends mvn verify as the default full check rather than clean install"
+    ]
+  }
+]
