@@ -23,6 +23,12 @@
 hs_err_pid*
 replay_pid*
 
+# IDE and OS cruft (don't rely on contributors' global excludes)
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
 # Claude Code (machine-local / secret — never commit)
 .claude/settings.local.json
 
