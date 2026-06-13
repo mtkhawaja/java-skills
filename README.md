@@ -30,6 +30,13 @@ A `SessionStart` hook detects Maven/Gradle projects and surfaces this skill list
 | `java-reviewer`        | Read-only review of a diff, class, or package against every skill's conventions and red-flag lists      |
 | `java-upgrade-advisor` | Ordered migration plans — Java version / Spring Boot / JUnit 4 → 5 (OpenRewrite), Maven 3 → 4 (`mvnup`) |
 
+## Auditing
+
+`/java-skills:java-audit [paths | diff]` — audit the repo (or just the branch diff, or named
+paths) against every skill's conventions; dispatches the `java-reviewer` agent and reports
+severity-grouped findings. It's a regular skill, so asking to "audit this codebase against our
+Java standards" triggers it too.
+
 ## Layout
 
 ```text
