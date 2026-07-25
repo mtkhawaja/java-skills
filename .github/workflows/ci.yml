@@ -23,7 +23,7 @@ jobs:
         with:
           version: v0.11.0
       - name: markdownlint
-        uses: DavidAnson/markdownlint-cli2-action@v24.0.0
+        uses: DavidAnson/markdownlint-cli2-action@v24.1.0
         with:
           globs: '**/*.md'
       - run: ./scripts/check.sh static
