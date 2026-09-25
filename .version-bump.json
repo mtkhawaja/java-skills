@@ -10,7 +10,9 @@
       ".git",
       ".version-bump.json",
       "scripts/bump-version.sh",
-      "multi-module.md"
+      "multi-module.md",
+      "scaffold.sh",
+      "results"
     ]
   }
 }
