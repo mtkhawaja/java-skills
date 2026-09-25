@@ -32,3 +32,6 @@ replay_pid*
 # Claude Code (machine-local / secret — never commit)
 .claude/settings.local.json
 
+
+# Plugin eval run output (claude plugin eval)
+evals/results/

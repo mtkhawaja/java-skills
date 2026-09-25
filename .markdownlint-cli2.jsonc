@@ -8,6 +8,8 @@
   "ignores": [
     // Historical planning record, not shipped content.
     "docs/superpowers/plans/**",
+    // Eval prompts/rubrics are verbatim model input, not rendered docs.
+    "evals/*/*/**",
     "node_modules/**"
   ]
 }
