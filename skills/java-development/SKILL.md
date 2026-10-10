@@ -20,6 +20,9 @@ configured Java version; never use *preview*/incubator features unless the proje
 - Declare variables, parameters, **and** fields `final` unless mutation is intentional and justified.
 - Inject mandatory dependencies through the **constructor** and null-check them; no field/setter
   injection for required collaborators.
+- **JSpecify nullness** where the build uses it (`org.jspecify` on the classpath): every new package
+  gets a `package-info.java` with `@NullMarked` (in each source root, test too), and anything
+  nullable is `@Nullable` from `org.jspecify.annotations` (see the `java-maven` build-hardening reference).
 - **Always use braces** on `if`/`for`/`while`/`else`, even single-line bodies.
 - **Class-level imports only** — no member/static imports unless an API is designed for it.
 - Records for immutable data carriers (Java 16+); keep classes small and single-purpose.

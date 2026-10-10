@@ -57,7 +57,7 @@ check_json() {
 }
 
 check_evals() {
-  say "eval suites are well-formed (3 cases per skill, each with graders)"
+  say "eval suites are well-formed (≥3 cases per skill, each with graders)"
   local skill_md skill cases case_dir
   for skill_md in skills/*/SKILL.md; do
     skill="$(basename "$(dirname "${skill_md}")")"
@@ -65,14 +65,15 @@ check_evals() {
       || { err "evals/${skill}: missing eval suite"; exit 1; }
     cases="$(find "evals/${skill}" -mindepth 2 -maxdepth 2 -name prompt.md \
       | wc -l | tr -d ' ')"
-    [[ "${cases}" -eq 3 ]] \
-      || { err "evals/${skill}: expected 3 cases, found ${cases}"; exit 1; }
+    [[ "${cases}" -ge 3 ]] \
+      || { err "evals/${skill}: expected at least 3 cases, found ${cases}"; exit 1; }
     for case_dir in "evals/${skill}"/*/; do
       [[ "$(head -n1 "${case_dir}prompt.md")" == "---" ]] \
         || { err "${case_dir}prompt.md: missing frontmatter"; exit 1; }
-      [[ -f "${case_dir}graders/criteria.md" \
-        && -f "${case_dir}graders/skill-fired.md" ]] \
-        || { err "${case_dir}: missing criteria/skill-fired grader"; exit 1; }
+      [[ -f "${case_dir}graders/skill-fired.md" ]] \
+        || { err "${case_dir}: missing skill-fired grader"; exit 1; }
+      grep -qE '^type: (llm|regex)$' "${case_dir}graders"/*.md \
+        || { err "${case_dir}: needs a result grader besides skill-fired"; exit 1; }
     done
   done
 }

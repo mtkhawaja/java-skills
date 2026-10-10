@@ -3,13 +3,16 @@
 Scenario-based evaluations for each skill, in the structure recommended by
 [Anthropic's skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices#build-evaluations-first),
 run with [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals).
-Each skill has three cases under `evals/<skill>/<case>/`:
+Each skill has at least three cases under `evals/<skill>/<case>/`:
 
 - `prompt.md` — the user request (body) plus run limits and tools (frontmatter)
-- `graders/criteria.md` — `llm` rubric; every listed behavior must be present
+- `graders/criteria.md` — `llm` rubric; every listed behavior must be present (or `regex`
+  graders instead, see below)
 - `graders/skill-fired.md` — `tool_used: Skill` check that the skill was invoked
 - other `graders/*.md` — deterministic checks on the reply (`regex`) or on the steps
-  (`tool_used`); ones that can only pass with the plugin loaded are `arm: with-only`
+  (`tool_used`); ones that can only pass with the plugin loaded are `arm: with-only`.
+  Long replies (full configs) are graded by `regex` instead of `criteria.md` — the `llm` judge is
+  unreliable on them (see `java-maven/harden-build`)
 - `case.yaml` + `scaffold.sh` — `java-audit` only: seeds a fixture repo to audit
 
 ## Running

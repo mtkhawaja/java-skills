@@ -18,7 +18,7 @@ A Claude Code plugin (and self-hosting marketplace) providing a skills library f
 before writing a new skill or substantially editing one**, and keep the repo conformant with it:
 third-person "Use when…" descriptions (≤1024 chars), SKILL.md body well under 500 lines, reference
 files linked one level deep from SKILL.md (with a `## Contents` section once they pass 100 lines),
-no time-sensitive phrasing, and three scenarios per skill in `evals/` (see `evals/README.md`).
+no time-sensitive phrasing, and at least three scenarios per skill in `evals/` (see `evals/README.md`).
 
 ## Checks
 

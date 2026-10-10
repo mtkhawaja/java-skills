@@ -1,6 +1,6 @@
 ---
 name: java-maven
-description: Use when working with Maven builds — editing pom.xml, structuring or building multi-module/multi-project (reactor) projects, managing dependencies/plugins/BOMs, cleaning up POM hygiene (scopes, ordering, redundant versions), upgrading Maven 3 to Maven 4, or running large mechanical migrations (Java version, Spring Boot, JUnit upgrades) where OpenRewrite recipes beat hand-editing. Load the reference files for multi-module details and the Maven 4 upgrade.
+description: Use when working with Maven builds — editing pom.xml, structuring or building multi-module/multi-project (reactor) projects, managing dependencies/plugins/BOMs, cleaning up POM hygiene (scopes, ordering, redundant versions), upgrading Maven 3 to Maven 4, hardening a build with static analysis (Error Prone, NullAway/JSpecify null checking, Checkstyle, compiler warnings as errors, Maven Enforcer, JaCoCo coverage floor), or running large mechanical migrations (Java version, Spring Boot, JUnit upgrades) where OpenRewrite recipes beat hand-editing. Load the reference files for multi-module details, the Maven 4 upgrade, and build hardening.
 ---
 
 # Java Maven
@@ -13,7 +13,8 @@ description: Use when working with Maven builds — editing pom.xml, structuring
 · [What's new in Maven 4](https://maven.apache.org/whatsnewinmaven4.html)
 
 The house standard for Maven builds. Everyday conventions, POM hygiene, and migrations live here;
-multi-module/reactor detail and the Maven 4 upgrade live in `references/` (routing table below).
+multi-module/reactor detail, the Maven 4 upgrade, and build hardening live in `references/` (routing
+table below).
 
 ## Everyday conventions
 
@@ -78,10 +79,12 @@ Recipes are a starting point, not gospel: review the diff, build, and test befor
 
 ## When to open which reference
 
-| Situation                                                                                     | Read                            |
-|-----------------------------------------------------------------------------------------------|---------------------------------|
-| Setting up or building part of a multi-module repo; reactor/build-order/BOM questions         | `references/multi-module.md`    |
-| Moving a build to Maven 4, or asked about `<subprojects>`, `mvnup`, model 4.1.0, consumer POM | `references/maven-4-upgrade.md` |
+| Situation                                                                                      | Read                            |
+|------------------------------------------------------------------------------------------------|---------------------------------|
+| Setting up or building part of a multi-module repo; reactor/build-order/BOM questions          | `references/multi-module.md`    |
+| Moving a build to Maven 4, or asked about `<subprojects>`, `mvnup`, model 4.1.0, consumer POM  | `references/maven-4-upgrade.md` |
+| Hardening a build: Error Prone, NullAway/JSpecify, Checkstyle, `-Werror`, Enforcer, JaCoCo     | `references/build-hardening.md` |
+| The Checkstyle config that build-hardening tells you to copy                                   | `references/checkstyle.xml`     |
 
 ## Red flags — stop
 

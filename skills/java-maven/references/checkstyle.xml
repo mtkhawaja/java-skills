@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+  java-skills house rules, enforced at build time. Copy to config/checkstyle/checkstyle.xml.
+  Formatting and naming are left to the formatter/IDE; this file only encodes conventions that
+  Error Prone/NullAway do not cover.
+-->
+<module name="Checker">
+  <property name="severity" value="error"/>
+
+  <!-- Every package is @NullMarked: a package-info.java must exist in each package ... -->
+  <module name="JavadocPackage"/>
+  <!-- ... and must declare @NullMarked (NullMarkedPackage below only applies to package-info). -->
+  <module name="SuppressionSingleFilter">
+    <property name="id" value="NullMarkedPackage"/>
+    <property name="files" value="^(?!.*package-info\.java$).*$"/>
+  </module>
+
+  <module name="TreeWalker">
+
+    <module name="MatchXpath">
+      <property name="id" value="NullMarkedPackage"/>
+      <property name="query" value="//PACKAGE_DEF[not(ANNOTATIONS/ANNOTATION[IDENT[@text='NullMarked'] or DOT/IDENT[@text='NullMarked']])]"/>
+      <message key="matchxpath.match" value="package-info.java must declare @NullMarked (org.jspecify.annotations)."/>
+    </module>
+
+    <!-- final by default: locals (unless reassigned), enhanced-for variables, parameters. -->
+    <module name="FinalLocalVariable">
+      <property name="validateEnhancedForLoopVariable" value="true"/>
+    </module>
+    <module name="FinalParameters">
+      <property name="tokens" value="METHOD_DEF, CTOR_DEF, LITERAL_CATCH"/>
+    </module>
+
+    <!-- Optional is a return type only: no Optional field, parameter, or record component.
+         Optional locals holding a call's result stay legal. -->
+    <module name="MatchXpath">
+      <property name="id" value="OptionalReturnOnly"/>
+      <property name="query" value="(//OBJBLOCK/VARIABLE_DEF | //PARAMETER_DEF | //RECORD_COMPONENT_DEF)/TYPE[IDENT[@text='Optional'] or DOT/IDENT[@text='Optional']]"/>
+      <message key="matchxpath.match" value="Optional is a return type only: not a field, parameter, or record component."/>
+    </module>
+
+    <!-- Single-line ternaries only. A wrap must break before ? / : (OperatorWrap), and any line
+         that then starts with ? or : is rejected (RegexpSinglelineJava; wildcards like
+         `? extends T` are exempt). Wrapped enhanced-for and assert colons are caught too, as are
+         text-block lines starting with a lone ? or :. A wrap inside an operand (e.g. a wrapped
+         argument list) is not caught. -->
+    <module name="OperatorWrap">
+      <property name="option" value="nl"/>
+      <property name="tokens" value="QUESTION, COLON"/>
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="NoWrappedTernary"/>
+      <property name="format" value="^\s*(\?(?!\S)(?!\s*(extends|super)\b)|:(?!\S))"/>
+      <property name="ignoreComments" value="true"/>
+      <property name="message" value="Keep a ternary on one line; use if/else or extract a method when it does not fit."/>
+    </module>
+
+  </module>
+</module>
