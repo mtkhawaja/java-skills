@@ -10,6 +10,8 @@
     "docs/superpowers/plans/**",
     // Eval prompts/rubrics are verbatim model input, not rendered docs.
     "evals/*/*/**",
+    // Local, git-ignored plan-execution scratch.
+    ".superpowers/**",
     "node_modules/**"
   ]
 }
