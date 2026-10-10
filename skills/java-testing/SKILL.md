@@ -1,6 +1,6 @@
 ---
 name: java-testing
-description: Use when writing or reviewing Java tests, unit or integration — JUnit Jupiter with AssertJ assertions, the @DisplayName / method-name mirroring convention, behavior-focused naming, Mockito (annotation mocks, no deep stubs, @MockitoBean for Spring), and Testcontainers with @ServiceConnection for real backing services (database, Kafka, Redis). Catches JUnit-assertion use, class-level @DisplayName, imperative or deep-stub mocking, H2-instead-of-real-DB, container-per-method, and slow/flaky suites.
+description: Use when writing or reviewing Java tests, unit or integration — JUnit Jupiter with AssertJ assertions, the @DisplayName / method-name mirroring convention, behavior-focused naming, Mockito (annotation mocks, no deep stubs, @MockitoBean for Spring), and Testcontainers with @ServiceConnection for real backing services (database, Kafka, Redis). Catches JUnit-assertion use, class-level @DisplayName, imperative or deep-stub mocking, H2-instead-of-real-DB, container-per-method, and slow/flaky suites. Also covers splitting fast from slow tests (Failsafe *IT, @Tag("slow"), a fast inner-loop profile) and quiet test output (WARN test logging, output redirected to report files).
 ---
 
 # Java Testing
@@ -10,7 +10,8 @@ description: Use when writing or reviewing Java tests, unit or integration — J
 Tests document behavior. The house stack: **JUnit Jupiter** for structure, **AssertJ** for
 assertions, **Mockito** (annotation-driven) for isolation, and **Testcontainers** +
 `@ServiceConnection` when a test needs a real backing service. For container lifecycle and
-suite-wide sharing details see `references/testcontainers-patterns.md`.
+suite-wide sharing details see `references/testcontainers-patterns.md`; for the fast/slow split
+and quiet test output see `references/test-split-and-output.md`.
 
 ## Structure & assertions
 
@@ -80,8 +81,10 @@ Integration tests exercise the **real** backing service against production parit
   rollback (repository slice tests) or reset (truncate / Flyway clean) in setup; never rely on order.
 - **Use the narrowest slice** that exercises the behavior: `@DataJdbcTest` (JDBC beans only, rolls
   back per test) for repository tests; `@SpringBootTest` only when you need the full service path.
-- **Separate integration tests from unit tests** so a slow container suite doesn't run on every
-  `mvn test`: name them `*IT` (Maven **Failsafe**) vs `*Test` (**Surefire**), and/or `@Tag("integration")`.
+- **Split fast from slow** so `mvn test` stays a fast inner loop: `*IT` (Maven **Failsafe**) for
+  anything that starts Spring, containers, or the network; `@Tag("slow")` for slow unit tests,
+  excluded only by a `fast` profile (`./mvnw -q test -Pfast`). Plain `verify` runs everything.
+  Keep test logs at WARN and output in report files. See `references/test-split-and-output.md`.
 - Don't hand-manage `start()/stop()` for `@Container` fields (the extension owns the lifecycle) —
   only for the deliberate singleton/reuse patterns in the reference.
 
@@ -127,6 +130,7 @@ class OrderPersistenceIT {
 | "`@DynamicPropertySource` works fine"                 | `@ServiceConnection` is the modern, terse replacement (Boot 3.1+).                                                   |
 | "Each test/class gets its own container"              | Non-static `@Container` = container per method; per class is still slow at scale. `static`, shared across the suite. |
 | "Integration tests run with the unit tests"           | Separate `*IT`/Failsafe from `*Test`/Surefire so `mvn test` stays fast.                                              |
+| "Every test run prints pages of DEBUG logs"           | Test log level WARN via `test.log.level`, `redirectTestOutputToFile`; re-run one failure at DEBUG.                   |
 
 ## Red flags — stop
 
