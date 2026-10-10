@@ -15,14 +15,15 @@ development. The repo doubles as its own plugin marketplace.
 
 ## Skills
 
-| Skill                | Use for                                                                                                                                                                |
-|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `java-development`   | Everyday Java craft — immutability, DI, exceptions, resources, validation, date/time, comments — gated to the project's JDK version (per-LTS feature references, 8–25) |
-| `java-testing`       | JUnit Jupiter + AssertJ + Mockito conventions, and Testcontainers integration testing with `@ServiceConnection`                                                        |
-| `java-concurrency`   | Executors and virtual threads, bounded fan-out, executor lifecycle, shared-state visibility                                                                            |
-| `java-observability` | SLF4J structured logging, MDC correlation, Micrometer metrics, OpenTelemetry tracing                                                                                   |
-| `java-maven`         | `pom.xml` conventions, multi-module reactors, Maven 3 → 4 migration                                                                                                    |
-| `java-gitignore`     | Initialize or audit a Java `.gitignore`; un-track mistakenly committed files; secrets-in-history caveats                                                               |
+| Skill                | Use for                                                                                                                                                                                 |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `java-development`   | Everyday Java craft — immutability, DI, exceptions, resources, validation, date/time, comments — gated to the project's JDK version (per-LTS feature references, 8–25)                  |
+| `java-testing`       | JUnit Jupiter + AssertJ + Mockito conventions, and Testcontainers integration testing with `@ServiceConnection`                                                                         |
+| `java-concurrency`   | Executors and virtual threads, bounded fan-out, executor lifecycle, shared-state visibility                                                                                             |
+| `java-observability` | SLF4J structured logging, MDC correlation, Micrometer metrics, OpenTelemetry tracing                                                                                                    |
+| `java-maven`         | `pom.xml` conventions, multi-module reactors, Maven 3 → 4 migration                                                                                                                     |
+| `java-gitignore`     | Initialize or audit a Java `.gitignore`; un-track mistakenly committed files; secrets-in-history caveats                                                                                |
+| `java-agent-ready`   | Audit a Maven project for agentic coding and apply picked fixes: wrapper, pinned JDK, `.editorconfig`, fast/slow tests, quiet logs, hermetic tests, JaCoCo/Checkstyle, AGENTS.md, jdtls |
 
 A `SessionStart` hook detects Maven/Gradle projects and surfaces this skill list automatically.
 
@@ -39,6 +40,11 @@ A `SessionStart` hook detects Maven/Gradle projects and surfaces this skill list
 paths) against every skill's conventions; dispatches the `java-reviewer` agent and reports
 severity-grouped findings. It's a regular skill, so asking to "audit this codebase against our
 Java standards" triggers it too.
+
+## Agent readiness
+
+`/java-skills:java-agent-ready [area…]` — audit a Maven project for agentic coding, report gaps,
+and apply only the areas you pick (one build-verified change per area, nothing committed).
 
 ## Layout
 

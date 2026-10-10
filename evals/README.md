@@ -13,7 +13,7 @@ Each skill has at least three cases under `evals/<skill>/<case>/`:
   (`tool_used`); ones that can only pass with the plugin loaded are `arm: with-only`.
   Long replies (full configs) are graded by `regex` instead of `criteria.md` — the `llm` judge is
   unreliable on them (see `java-maven/harden-build`)
-- `case.yaml` + `scaffold.sh` — `java-audit` only: seeds a fixture repo to audit
+- `case.yaml` + `scaffold.sh` — cases that need a fixture repo (`java-audit`, `java-agent-ready`)
 
 ## Running
 
@@ -27,7 +27,8 @@ claude plugin eval . --case child-pom-review --runs 1 --ablation none   # cheap 
 ```
 
 `--scaffold` runs the audit fixtures (our own scripts). Graders judge Claude's reply, so don't
-grant `Write`/`Edit`, and grant `Bash` only to `branch-diff-audit`: `--allow-tools` applies to
+grant `Write`/`Edit` (and phrase `llm` rubrics as what the reply proposes, not actions taken —
+the judge fails a correct plan for not having "done" it), and grant `Bash` only to `branch-diff-audit`: `--allow-tools` applies to
 every case in the run, and a case that writes its answer to a file leaves the judge only a
 summary. Without the grant, `branch-diff-audit` fails by design. Every run is a real model call
 billed to your account; results land in `evals/results/` (gitignored).
